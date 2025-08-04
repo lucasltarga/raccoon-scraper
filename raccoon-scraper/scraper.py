@@ -41,3 +41,10 @@ def get_complaint_from_browser(browser):
           f"Local: {local}\n"
           f"Date and time: {date_time}\n")
     
+    dictDF = {"id": id,
+        "title": title,
+        "status": status,
+        "user_message": user_message,
+        "local": local,
+        "date_time": date_time}
+    return dictDF
