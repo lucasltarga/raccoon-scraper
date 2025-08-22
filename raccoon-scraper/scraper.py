@@ -9,7 +9,7 @@ import random
 def get_links_from_single_page(browser):
     WebDriverWait(browser, 10).until(EC.presence_of_all_elements_located(("id", "site_bp_lista_ler_reclamacao")))
     # Wait a bit to ensure all elements are loaded. Prevents StaleElementReferenceException.
-    time.sleep(0.5)  
+    time.sleep(2)
     complaints = browser.find_elements("id", "site_bp_lista_ler_reclamacao")
     link_list = [complaint.get_attribute("href") for complaint in complaints]
 
@@ -116,7 +116,7 @@ def scrape_complaints(links, processed_links):
             browser = webdriver.Chrome(options=options)
             browser.maximize_window()
             browser.get(complaint)
-            time.sleep(random.uniform(6, 9))  # Wait a random time to avoid being blocked by the website
+            time.sleep(random.uniform(6, 10))  # Wait a random time to avoid being blocked by the website
             complaint_data = get_complaint_from_browser(browser)
             replies = get_replies_from_browser(browser)
 
