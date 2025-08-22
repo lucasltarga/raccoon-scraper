@@ -48,3 +48,26 @@ def get_complaint_from_browser(browser):
         "local": local,
         "date_time": date_time}
     return dictDF
+
+def get_replies_from_browser(browser):
+    titles = browser.find_elements(By.CSS_SELECTOR, "h2.sc-1o3atjt-2")
+    dates = browser.find_elements(By.CSS_SELECTOR, "span.sc-1o3atjt-3")
+    messages = browser.find_elements(By.CSS_SELECTOR, "p.sc-1o3atjt-4")
+
+    # Combine titles, dates and messages into a list of dictionaries
+    # Each dictionary contains a title and its corresponding message
+    title_message_pairs = []
+    for title_elem, date_elem, message_elem in zip(titles, dates, messages):
+        # Combine title and date into a single string
+        combined_title = f"{title_elem.text} em {date_elem.text}"
+        
+        title_message_pairs.append({
+            "title": combined_title,
+            "message": message_elem.text
+        })
+    
+    # Display the title and text pairs on the screen:
+    for pair in title_message_pairs:
+        print(f"Reply title: {pair['title']}\nReply text: {pair['message']}\n")
+
+    return title_message_pairs
