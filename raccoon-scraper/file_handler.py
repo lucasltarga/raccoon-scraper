@@ -4,6 +4,27 @@ from datetime import datetime
 
 # RAccoon Scraper: File Handler Module
 
+# Save all links retrieved from pages to a text file
+def save_all_links(links, filename= None):
+    if filename and not filename.endswith('.txt'):
+        filename += '.txt'
+
+    if not filename:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+        filename = f"{timestamp}_links.txt"
+
+    with open(filename, "w") as f:
+        for link in links:
+            f.write(link + "\n")
+    print(f"Links saved to '{filename}'.")
+
+# Load links from a file and return them as a list
+def load_links_from_file(filepath="import_links.txt"):
+    if os.path.exists(filepath):
+            with open(filepath, "r") as f:
+                return [line.strip() for line in f.readlines()]
+    return []
+
 # Load processed links from a file and return them as a list
 def load_processed_links(filepath="last_processed_links.txt"):
     if os.path.exists(filepath):

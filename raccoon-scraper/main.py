@@ -14,19 +14,27 @@ def main():
     
     # Categories for the complaints. You can specify categories by their IDs.
     categories = []
-
-    # Generate URLs for pages 1 to 50 for the company complaints.
-    print("Generating URLs for pages 1 to 50...")
-    pages = scraper.generate_list_of_pages(company_complaints_url, categories)
     
-    # Fetch complaint links from the pages
-    print(f"Fetching complaint links from {len(pages)} pages...")
+    imported_file = file_handler.load_links_from_file()
+    print(imported_file)
+    if imported_file:
+        print(f"Importing {len(imported_file)} links from 'import_links.txt'...")
+        # If links are imported from a file, skip the link fetching process
+        links = imported_file
+    
+    else:
+        # Generate URLs for pages 1 to 50 for the company complaints.
+        print("Generating URLs for pages 1 to 50...")
+        pages = scraper.generate_list_of_pages(company_complaints_url, categories)
+        
+        # Fetch complaint links from the pages
+        print(f"Fetching complaint links from {len(pages)} pages...")
+        links = scraper.get_links_from_multiple_pages(pages)
+        print(f"Found {len(links)} links.")
+        file_handler.save_all_links(links)
+    
     # Load previously processed links from last_processed_links.txt to avoid duplicates
     processed_links = file_handler.load_processed_links()
-    links = scraper.get_links_from_multiple_pages(pages)
-    print(f"Found {len(links)} links.")
-    print(links)
-
     # Filter out links that have already been processed
     links = [link for link in links if link not in processed_links]
 
